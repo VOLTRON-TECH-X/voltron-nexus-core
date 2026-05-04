@@ -42,7 +42,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             const active = n.exact ? pathname === n.to : pathname.startsWith(n.to);
             const Icon = n.icon;
             return (
-              <Link key={n.to} to={n.to}
+              <Link key={n.to} to={n.to as string}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition ${
                   active ? "bg-primary/10 text-primary neon-border" : "text-foreground/70 hover:bg-primary/5 hover:text-foreground"
                 }`}>
