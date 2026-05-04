@@ -1,7 +1,10 @@
-import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Link, Outlet, Scripts, useRouterState } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { trackPageView } from "@/lib/visitor";
+import { supabase } from "@/integrations/supabase/client";
 
 import appCss from "../styles.css?url";
 
