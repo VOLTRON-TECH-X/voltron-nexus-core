@@ -53,7 +53,12 @@ function ContactPage() {
     }
     setErrors({});
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("contact_messages").insert({
+      name: result.data.name, email: result.data.email,
+      subject: result.data.subject, message: result.data.message,
+    });
+    if (error) { toast.error(error.message); setLoading(false); return; }
     toast.success("Message launched! We'll reply within 24h.");
     setForm({ name: "", email: "", subject: "", message: "" });
     setLoading(false);
