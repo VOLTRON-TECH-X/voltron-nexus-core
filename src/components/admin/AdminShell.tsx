@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { ReactNode } from "react";
 
-const navItems = [
+const navItems: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/posts", label: "Blog Posts", icon: FileText },
   { to: "/admin/vpn", label: "VPN Configs", icon: Wifi },
   { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/admin/messages", label: "Messages", icon: Mail },
-] as const;
+];
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
