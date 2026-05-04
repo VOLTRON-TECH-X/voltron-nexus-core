@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConfigsRouteImport } from './routes/configs'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminVpnRouteImport } from './routes/admin.vpn'
 import { Route as AdminPostsRouteImport } from './routes/admin.posts'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
@@ -37,6 +39,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfigsRoute = ConfigsRouteImport.update({
+  id: '/configs',
+  path: '/configs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -56,6 +63,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
 } as any)
 const AdminVpnRoute = AdminVpnRouteImport.update({
   id: '/vpn',
@@ -86,7 +98,8 @@ const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/configs': typeof ConfigsRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRoute
@@ -95,11 +108,13 @@ export interface FileRoutesByFullPath {
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/posts': typeof AdminPostsRoute
   '/admin/vpn': typeof AdminVpnRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/configs': typeof ConfigsRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRoute
@@ -108,13 +123,15 @@ export interface FileRoutesByTo {
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/posts': typeof AdminPostsRoute
   '/admin/vpn': typeof AdminVpnRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
+  '/configs': typeof ConfigsRoute
   '/contact': typeof ContactRoute
   '/pricing': typeof PricingRoute
   '/services': typeof ServicesRoute
@@ -123,6 +140,7 @@ export interface FileRoutesById {
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/posts': typeof AdminPostsRoute
   '/admin/vpn': typeof AdminVpnRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -131,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/blog'
+    | '/configs'
     | '/contact'
     | '/pricing'
     | '/services'
@@ -139,11 +158,13 @@ export interface FileRouteTypes {
     | '/admin/messages'
     | '/admin/posts'
     | '/admin/vpn'
+    | '/blog/$slug'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/blog'
+    | '/configs'
     | '/contact'
     | '/pricing'
     | '/services'
@@ -152,12 +173,14 @@ export interface FileRouteTypes {
     | '/admin/messages'
     | '/admin/posts'
     | '/admin/vpn'
+    | '/blog/$slug'
     | '/admin'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/blog'
+    | '/configs'
     | '/contact'
     | '/pricing'
     | '/services'
@@ -166,13 +189,15 @@ export interface FileRouteTypes {
     | '/admin/messages'
     | '/admin/posts'
     | '/admin/vpn'
+    | '/blog/$slug'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
+  ConfigsRoute: typeof ConfigsRoute
   ContactRoute: typeof ContactRoute
   PricingRoute: typeof PricingRoute
   ServicesRoute: typeof ServicesRoute
@@ -199,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configs': {
+      id: '/configs'
+      path: '/configs'
+      fullPath: '/configs'
+      preLoaderRoute: typeof ConfigsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -228,6 +260,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
     }
     '/admin/vpn': {
       id: '/admin/vpn'
@@ -287,10 +326,21 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
+  ConfigsRoute: ConfigsRoute,
   ContactRoute: ContactRoute,
   PricingRoute: PricingRoute,
   ServicesRoute: ServicesRoute,
