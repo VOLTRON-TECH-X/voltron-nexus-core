@@ -9,10 +9,16 @@ import { toast } from "sonner";
 export function Footer() {
   const [email, setEmail] = useState("");
 
-  const subscribe = (e: React.FormEvent) => {
+  const subscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       toast.error("Enter a valid email");
+      return;
+    }
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email });
+    if (error && !error.message.includes("duplicate")) {
+      toast.error(error.message);
       return;
     }
     toast.success("Subscribed! Welcome aboard.");
