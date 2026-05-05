@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { AdBlockGuard } from "@/components/AdBlockGuard";
 import { trackPageView } from "@/lib/visitor";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -59,6 +60,12 @@ export const Route = createRootRoute({
         "data-zone": "236015",
         "data-cfasync": "false",
       } as any,
+      {
+        children: `(function(s){s.dataset.zone='10966821',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`,
+      } as any,
+      {
+        children: `(function(s){s.dataset.zone='10966813',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`,
+      } as any,
     ],
   }),
   shellComponent: RootShell,
@@ -110,6 +117,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      <AdBlockGuard />
       <Toaster theme="dark" />
     </>
   );
