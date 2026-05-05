@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Shield, Cloud, Globe, Download, Server, Lock,
-  ArrowRight, Zap, Star, Quote, ChevronRight, Activity, Users, Cpu,
+  ArrowRight, Zap, Star, Quote, ChevronRight, Activity, Cpu,
   Calendar, Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
