@@ -140,6 +140,48 @@ export type Database = {
         }
         Relationships: []
       }
+      services: {
+        Row: {
+          cover_image: string | null
+          created_at: string
+          description: string
+          features: string[]
+          icon: string | null
+          id: string
+          is_active: boolean
+          sort_order: number
+          tag: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cover_image?: string | null
+          created_at?: string
+          description?: string
+          features?: string[]
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          tag?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cover_image?: string | null
+          created_at?: string
+          description?: string
+          features?: string[]
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          sort_order?: number
+          tag?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
