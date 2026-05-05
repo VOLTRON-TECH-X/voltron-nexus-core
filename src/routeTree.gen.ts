@@ -19,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminVpnRouteImport } from './routes/admin.vpn'
+import { Route as AdminServicesRouteImport } from './routes/admin.services'
 import { Route as AdminPostsRouteImport } from './routes/admin.posts'
 import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -74,6 +75,11 @@ const AdminVpnRoute = AdminVpnRouteImport.update({
   path: '/vpn',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminServicesRoute = AdminServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminPostsRoute = AdminPostsRouteImport.update({
   id: '/posts',
   path: '/posts',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/posts': typeof AdminPostsRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/vpn': typeof AdminVpnRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/posts': typeof AdminPostsRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/vpn': typeof AdminVpnRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/admin': typeof AdminIndexRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/messages': typeof AdminMessagesRoute
   '/admin/posts': typeof AdminPostsRoute
+  '/admin/services': typeof AdminServicesRoute
   '/admin/vpn': typeof AdminVpnRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/admin/': typeof AdminIndexRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/messages'
     | '/admin/posts'
+    | '/admin/services'
     | '/admin/vpn'
     | '/blog/$slug'
     | '/admin/'
@@ -172,6 +182,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/messages'
     | '/admin/posts'
+    | '/admin/services'
     | '/admin/vpn'
     | '/blog/$slug'
     | '/admin'
@@ -188,6 +199,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/messages'
     | '/admin/posts'
+    | '/admin/services'
     | '/admin/vpn'
     | '/blog/$slug'
     | '/admin/'
@@ -275,6 +287,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminVpnRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/services': {
+      id: '/admin/services'
+      path: '/services'
+      fullPath: '/admin/services'
+      preLoaderRoute: typeof AdminServicesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/posts': {
       id: '/admin/posts'
       path: '/posts'
@@ -311,6 +330,7 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminPostsRoute: typeof AdminPostsRoute
+  AdminServicesRoute: typeof AdminServicesRoute
   AdminVpnRoute: typeof AdminVpnRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -320,6 +340,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminMessagesRoute: AdminMessagesRoute,
   AdminPostsRoute: AdminPostsRoute,
+  AdminServicesRoute: AdminServicesRoute,
   AdminVpnRoute: AdminVpnRoute,
   AdminIndexRoute: AdminIndexRoute,
 }

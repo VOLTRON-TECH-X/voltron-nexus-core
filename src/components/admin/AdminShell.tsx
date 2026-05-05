@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, FileText, Wifi, BarChart3, LogOut, ShieldCheck, Mail, Menu } from "lucide-react";
+import { LayoutDashboard, FileText, Wifi, BarChart3, LogOut, ShieldCheck, Mail, Menu, Layers } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 const navItems: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/posts", label: "Blog Posts", icon: FileText },
+  { to: "/admin/services", label: "Services", icon: Layers },
   { to: "/admin/vpn", label: "VPN Configs", icon: Wifi },
   { to: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/admin/messages", label: "Messages", icon: Mail },
