@@ -2,9 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
   Shield, Cloud, Globe, Download, Server, Lock,
-  ArrowRight, Zap, Star, Quote, ChevronRight, Activity, Users, Cpu,
+  ArrowRight, Zap, Star, Quote, ChevronRight, Activity, Cpu,
+  Calendar, Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -77,11 +79,29 @@ const testimonials = [
   { name: "Lina R.", role: "Content Creator", text: "Dedicated IPs + VPN combo means I never get geo-blocked. Streaming workflow finally smooth.", rating: 5 },
 ];
 
+interface RecentPost { id: string; slug: string; title: string; excerpt: string | null; cover_image: string | null; category: string | null; published_at: string | null; created_at: string; }
+
 function HomePage() {
   const [tIndex, setTIndex] = useState(0);
+  const [recentPosts, setRecentPosts] = useState<RecentPost[]>([]);
+  const [visitorTotal, setVisitorTotal] = useState<number | null>(null);
+
   useEffect(() => {
     const i = setInterval(() => setTIndex((p) => (p + 1) % testimonials.length), 5000);
     return () => clearInterval(i);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const [posts, visitors] = await Promise.all([
+        supabase.from("posts").select("id,slug,title,excerpt,cover_image,category,published_at,created_at")
+          .eq("published", true).order("published_at", { ascending: false }).limit(3),
+        supabase.from("visitors").select("session_id"),
+      ]);
+      setRecentPosts((posts.data as RecentPost[]) ?? []);
+      const unique = new Set((visitors.data ?? []).map((v: any) => v.session_id));
+      setVisitorTotal(unique.size);
+    })();
   }, []);
 
   return (
@@ -120,18 +140,16 @@ function HomePage() {
             Next-gen internet infrastructure. VPN, encrypted cloud, dedicated IPs and DDoS-grade security — engineered for builders who refuse to compromise.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild variant="neon" size="xl">
-              <Link to="/pricing">
-                Launch Now <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
             <Button asChild variant="neonOutline" size="xl">
               <Link to="/services">Explore Services</Link>
+            </Button>
+            <Button asChild variant="neonOutline" size="xl">
+              <Link to="/configs">VPN Configs</Link>
             </Button>
           </div>
 
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <Counter to={10000} suffix="+" label="Active Users" Icon={Users} />
+            <Counter to={visitorTotal ?? 0} suffix="" label="Site Visitors" Icon={Eye} />
             <Counter to={50} suffix="+" label="Global Servers" Icon={Server} />
             <Counter to={5000} suffix="+" label="Happy Clients" Icon={Star} />
             <Counter to={99} suffix=".99%" label="Uptime SLA" Icon={Activity} />
@@ -211,6 +229,38 @@ function HomePage() {
         </div>
       </section>
 
+      {/* RECENT FROM BLOG */}
+      {recentPosts.length > 0 && (
+        <section className="container mx-auto px-4 py-24">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <div className="text-xs font-mono tracking-widest text-primary mb-2">◆ FRESH DROPS ◆</div>
+              <h2 className="font-display text-3xl md:text-4xl font-black">From the Blog</h2>
+            </div>
+            <Link to="/blog" className="text-sm text-primary hover:underline inline-flex items-center gap-1">View all <ArrowRight className="h-3 w-3" /></Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {recentPosts.map((p) => (
+              <Link key={p.id} to="/blog/$slug" params={{ slug: p.slug }} className="group glass rounded-2xl overflow-hidden flex flex-col neon-glow-hover">
+                <div className="h-40 bg-gradient-to-br from-primary/30 to-secondary/30 relative overflow-hidden">
+                  {p.cover_image
+                    ? <img src={p.cover_image} alt={p.title} className="absolute inset-0 w-full h-full object-cover" />
+                    : <div className="absolute inset-0 grid-bg opacity-50" />}
+                </div>
+                <div className="p-5 flex-1 flex flex-col">
+                  <span className="text-[10px] font-mono tracking-widest text-primary">{p.category ?? "Tech"}</span>
+                  <h3 className="font-display font-bold mt-2 group-hover:text-primary transition">{p.title}</h3>
+                  <p className="text-xs text-muted-foreground mt-2 line-clamp-3 flex-1">{p.excerpt}</p>
+                  <div className="text-xs text-muted-foreground mt-3 inline-flex items-center gap-1 font-mono">
+                    <Calendar className="h-3 w-3" />{new Date(p.published_at ?? p.created_at).toLocaleDateString()}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* CTA */}
       <section className="container mx-auto px-4 py-24">
         <div className="relative rounded-3xl overflow-hidden p-12 md:p-20 text-center glass-strong">
@@ -222,13 +272,17 @@ function HomePage() {
               Ready to <span className="text-gradient-neon">power up</span>?
             </h2>
             <p className="mt-6 text-lg text-muted-foreground max-w-xl mx-auto">
-              Join 10,000+ users who chose the next-gen internet stack. 7-day free trial. Cancel anytime.
+              Posts mpya, VPN configs na services — vyote viko hapa. Shiriki link hii kuendelea kupata huduma BURE.
             </p>
             <Button asChild variant="neon" size="xl" className="mt-10">
-              <Link to="/pricing">
-                Start Free Trial <ArrowRight className="h-4 w-4" />
+              <Link to="/blog">
+                LAUNCH NOW <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
+            <p className="mt-6 text-sm text-muted-foreground italic max-w-xl mx-auto">
+              Usisahau kushare link hii. Kushare ndo unatufanya tuendelee kutoa huduma zilizopo BURE kabisa.
+            </p>
+            <p className="mt-3 font-display text-lg text-gradient-neon font-black">KARIBUNI WOTE</p>
           </div>
         </div>
       </section>

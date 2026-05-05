@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Twitter, Send, MessageCircle, Instagram } from "lucide-react";
+import { Send, MessageCircle, Share2 } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +25,16 @@ export function Footer() {
     setEmail("");
   };
 
+  const share = async () => {
+    const url = typeof window !== "undefined" ? window.location.origin : "https://voltron-nexus-core.lovable.app";
+    const text = "VOLTRON TECH — Next-Gen Internet Solutions";
+    if (navigator.share) {
+      try { await navigator.share({ title: text, url }); return; } catch { /* cancelled */ }
+    }
+    await navigator.clipboard.writeText(url);
+    toast.success("Link imenakiliwa! Shiriki na marafiki.");
+  };
+
   return (
     <footer className="relative mt-32 border-t border-primary/15">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
@@ -35,17 +45,25 @@ export function Footer() {
           <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
             Next-Gen Internet Solutions. Beyond the connection — secure, fast, limitless.
           </p>
-          <div className="flex gap-3 mt-6">
-            {[Twitter, Send, MessageCircle, Instagram].map((Icon, i) => (
-              <a
-                key={i}
-                href="#"
-                className="h-9 w-9 grid place-items-center rounded-md glass neon-glow-hover text-foreground/70 hover:text-primary"
-                aria-label="Social link"
-              >
-                <Icon className="h-4 w-4" />
-              </a>
-            ))}
+        </div>
+
+        <div>
+          <h4 className="font-display text-sm tracking-widest text-primary mb-4">FOLLOW US</h4>
+          <div className="flex flex-col gap-3">
+            <a
+              href="http://wa.me/255759612721"
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-3 py-2 rounded-lg glass neon-glow-hover text-sm hover:text-primary"
+            >
+              <MessageCircle className="h-4 w-4 text-primary" /> WhatsApp
+            </a>
+            <a
+              href="http://t.me/Voltronmastertv"
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-3 py-2 rounded-lg glass neon-glow-hover text-sm hover:text-primary"
+            >
+              <Send className="h-4 w-4 text-primary" /> Telegram
+            </a>
           </div>
         </div>
 
@@ -54,27 +72,15 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><Link to="/" className="hover:text-primary">Home</Link></li>
             <li><Link to="/services" className="hover:text-primary">Services</Link></li>
-            <li><Link to="/pricing" className="hover:text-primary">Pricing</Link></li>
             <li><Link to="/blog" className="hover:text-primary">Blog</Link></li>
+            <li><Link to="/configs" className="hover:text-primary">VPN Configs</Link></li>
             <li><Link to="/contact" className="hover:text-primary">Contact</Link></li>
           </ul>
         </div>
 
         <div>
-          <h4 className="font-display text-sm tracking-widest text-primary mb-4">LEGAL</h4>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><a href="#" className="hover:text-primary">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-primary">Terms of Service</a></li>
-            <li><a href="#" className="hover:text-primary">Cookie Policy</a></li>
-            <li><a href="#" className="hover:text-primary">Refund Policy</a></li>
-          </ul>
-        </div>
-
-        <div>
           <h4 className="font-display text-sm tracking-widest text-primary mb-4">NEWSLETTER</h4>
-          <p className="text-sm text-muted-foreground mb-4">
-            Tech insights & product drops, no spam.
-          </p>
+          <p className="text-sm text-muted-foreground mb-4">Tech insights & product drops, no spam.</p>
           <form onSubmit={subscribe} className="flex gap-2">
             <Input
               type="email"
@@ -85,6 +91,9 @@ export function Footer() {
             />
             <Button type="submit" variant="neon" size="sm">Join</Button>
           </form>
+          <Button onClick={share} variant="neonOutline" size="sm" className="mt-4 w-full">
+            <Share2 className="h-4 w-4 mr-2" /> Share Voltron
+          </Button>
         </div>
       </div>
 
