@@ -80,12 +80,10 @@ const testimonials = [
 ];
 
 interface RecentPost { id: string; slug: string; title: string; excerpt: string | null; cover_image: string | null; category: string | null; published_at: string | null; created_at: string; }
-interface RecentService { id: string; title: string; tag: string | null; description: string; icon: string | null; }
 
 function HomePage() {
   const [tIndex, setTIndex] = useState(0);
   const [recentPosts, setRecentPosts] = useState<RecentPost[]>([]);
-  const [recentServices, setRecentServices] = useState<RecentService[]>([]);
   const [visitorTotal, setVisitorTotal] = useState<number | null>(null);
 
   useEffect(() => {
@@ -95,15 +93,12 @@ function HomePage() {
 
   useEffect(() => {
     (async () => {
-      const [posts, services, visitors] = await Promise.all([
+      const [posts, visitors] = await Promise.all([
         supabase.from("posts").select("id,slug,title,excerpt,cover_image,category,published_at,created_at")
           .eq("published", true).order("published_at", { ascending: false }).limit(3),
-        supabase.from("services").select("id,title,tag,description,icon")
-          .eq("is_active", true).order("sort_order").limit(3),
         supabase.from("visitors").select("session_id"),
       ]);
       setRecentPosts((posts.data as RecentPost[]) ?? []);
-      setRecentServices((services.data as RecentService[]) ?? []);
       const unique = new Set((visitors.data ?? []).map((v: any) => v.session_id));
       setVisitorTotal(unique.size);
     })();
