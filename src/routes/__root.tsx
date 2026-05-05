@@ -53,6 +53,12 @@ export const Route = createRootRoute({
         src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6964692480408265",
         crossOrigin: "anonymous",
       },
+      {
+        async: true,
+        src: "https://quge5.com/88/tag.min.js",
+        "data-zone": "236015",
+        "data-cfasync": "false",
+      } as any,
     ],
   }),
   shellComponent: RootShell,
