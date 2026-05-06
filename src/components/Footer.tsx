@@ -16,7 +16,6 @@ export function Footer() {
       toast.error("Enter a valid email");
       return;
     }
-    const { supabase } = await import("@/integrations/supabase/client");
     const { error } = await supabase.from("newsletter_subscribers").insert({ email });
     if (error && !error.message.includes("duplicate")) {
       toast.error(error.message);
