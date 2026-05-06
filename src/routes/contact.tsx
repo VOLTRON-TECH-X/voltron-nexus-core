@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -53,7 +54,6 @@ function ContactPage() {
     }
     setErrors({});
     setLoading(true);
-    const { supabase } = await import("@/integrations/supabase/client");
     const { error } = await supabase.from("contact_messages").insert({
       name: result.data.name, email: result.data.email,
       subject: result.data.subject, message: result.data.message,

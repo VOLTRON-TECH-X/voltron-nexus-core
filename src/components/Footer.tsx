@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 export function Footer() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,6 @@ export function Footer() {
       toast.error("Enter a valid email");
       return;
     }
-    const { supabase } = await import("@/integrations/supabase/client");
     const { error } = await supabase.from("newsletter_subscribers").insert({ email });
     if (error && !error.message.includes("duplicate")) {
       toast.error(error.message);
