@@ -54,7 +54,6 @@ function ContactPage() {
     }
     setErrors({});
     setLoading(true);
-    const { supabase } = await import("@/integrations/supabase/client");
     const { error } = await supabase.from("contact_messages").insert({
       name: result.data.name, email: result.data.email,
       subject: result.data.subject, message: result.data.message,
