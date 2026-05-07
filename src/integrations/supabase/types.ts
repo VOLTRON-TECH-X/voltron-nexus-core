@@ -236,6 +236,7 @@ export type Database = {
       vpn_configs: {
         Row: {
           config_text: string | null
+          cover_image: string | null
           created_at: string
           description: string
           download_count: number
@@ -250,6 +251,7 @@ export type Database = {
         }
         Insert: {
           config_text?: string | null
+          cover_image?: string | null
           created_at?: string
           description?: string
           download_count?: number
@@ -264,6 +266,7 @@ export type Database = {
         }
         Update: {
           config_text?: string | null
+          cover_image?: string | null
           created_at?: string
           description?: string
           download_count?: number

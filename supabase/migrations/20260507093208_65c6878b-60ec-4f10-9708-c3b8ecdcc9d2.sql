@@ -1,0 +1,1 @@
+ALTER TABLE public.vpn_configs ADD COLUMN IF NOT EXISTS cover_image text;
