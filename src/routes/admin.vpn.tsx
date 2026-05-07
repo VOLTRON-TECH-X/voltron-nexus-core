@@ -21,6 +21,7 @@ interface VpnConfig {
   config_text: string | null;
   file_url: string | null;
   file_name: string | null;
+  cover_image: string | null;
   is_active: boolean;
   download_count: number;
   sort_order: number;
@@ -28,7 +29,7 @@ interface VpnConfig {
 
 const empty: Partial<VpnConfig> = {
   name: "", type: "HTTP_CUSTOM", description: "", config_text: "",
-  file_url: "", file_name: "", is_active: true, sort_order: 0,
+  file_url: "", file_name: "", cover_image: "", is_active: true, sort_order: 0,
 };
 
 function AdminVpnPage() {
@@ -55,6 +56,7 @@ function AdminVpnPage() {
       config_text: editing.config_text || null,
       file_url: editing.file_url || null,
       file_name: editing.file_name || null,
+      cover_image: editing.cover_image || null,
       is_active: !!editing.is_active,
       sort_order: Number(editing.sort_order) || 0,
     };
@@ -169,6 +171,11 @@ function AdminVpnPage() {
                   </label>
                 </div>
                 {editing.file_name && <p className="text-xs text-muted-foreground mt-1 font-mono">📁 {editing.file_name}</p>}
+              </div>
+              <div>
+                <Label>Cover image URL</Label>
+                <Input value={editing.cover_image ?? ""} placeholder="https://…/image.jpg" onChange={(e) => setEditing({ ...editing, cover_image: e.target.value })} />
+                {editing.cover_image && <img src={editing.cover_image} alt="" className="mt-2 h-32 rounded object-cover" />}
               </div>
               <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 text-sm">
