@@ -154,6 +154,11 @@ function AdminServicesPage() {
                 <Textarea rows={4} value={editing.description ?? ""} onChange={(e) => setEditing({ ...editing, description: e.target.value })} />
               </div>
               <div>
+                <Label>Cover image URL</Label>
+                <Input value={editing.cover_image ?? ""} placeholder="https://…/image.jpg" onChange={(e) => setEditing({ ...editing, cover_image: e.target.value })} />
+                {editing.cover_image && <img src={editing.cover_image} alt="" className="mt-2 h-32 rounded object-cover" />}
+              </div>
+              <div>
                 <Label>Features (one per line)</Label>
                 <Textarea rows={5} value={featuresText} onChange={(e) => setFeaturesText(e.target.value)} />
               </div>
